@@ -32,6 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
+
 Dockerfile
 apikey.txt
 application-prod.properties
