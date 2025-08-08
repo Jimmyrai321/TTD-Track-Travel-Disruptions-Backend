@@ -33,7 +33,7 @@ build/
 .vscode/
 
 
-
 apikey.txt
 application-prod.properties
 application-docker.properties
+
