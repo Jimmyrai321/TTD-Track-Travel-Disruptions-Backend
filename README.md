@@ -71,7 +71,7 @@ Response:
             }
         ]
     }
-]
+...etc
 ```
 
 ### <img width="34" height="15" alt="GET" src="https://github.com/user-attachments/assets/348be0ea-8445-49bd-9fd2-b8ee7e81d9ee" /> `/journey/:userid`
@@ -188,6 +188,112 @@ Invalid ID:
 }
 ```
 
+### <img width="46" height="15" alt="POST" src="https://github.com/user-attachments/assets/aedb9d01-ed2f-4fe6-93ab-20e90e2fc9ff" /> `/journey`
+
+Adds new journey to the database. E.g of request body is shown below.
+
+Request body:
+```json
+{
+  "notificationsEnabled": false,
+  "originCRS": "BHM",
+  "destinationCRS": "EUS",
+  "userId": 1,
+  "days": [
+    "FRIDAY",
+    "SATURDAY"
+  ],
+  "departureTime": "21:45",
+  "journeyLegs": [
+    {
+      "origin": "Birmingham New Street",
+      "originCRS": "BHM",
+      "destination": "London Euston",
+      "destinationCRS": "EUS"
+    }
+  ]
+}
+```
+
+>[!WARNING]
+> All fields must be present in request body as shown in example. Valid origin and destination CRS need to present. Days in the `days` field must be captialised.
+
+Response:
+```json
+{
+    "id": 1758,
+    "notificationsEnabled": false,
+    "originCRS": "BHM",
+    "destinationCRS": "EUS",
+    "userId": 1,
+    "days": [
+        "FRIDAY",
+        "SATURDAY"
+    ],
+    "departureTime": "21:45:00",
+    "journeyLegs": [
+        {
+            "id": 1708,
+            "origin": "Birmingham New Street",
+            "originCRS": "BHM",
+            "destination": "London Euston",
+            "destinationCRS": "EUS",
+            "legOrder": 0,
+            "transportProvider": null
+        }
+    ]
+}
+```
+
+### <img width="34" height="15" alt="PUT" src="https://github.com/user-attachments/assets/9639ac4a-a370-44eb-bc2a-10daacdb4449" /> `/journey/:journeyid`
+
+Updates journey of selected journeyID e.g `http://localhost:8080/api/v1/journey/1602`. Any field requiring update needs to be present in request body. Invalid journeyID will throw 404 and error message.
+
+Request Body:
+```json
+{
+    "notificationsEnabled":false,
+    "days":["SATURDAY"],
+    "departureTime":"15:30",
+    "originCRS":"ELY",
+    "destinationCRS":"CBG"
+}
+```
+
+Invalid ID:
+```json
+{
+    "httpStatus": "NOT_FOUND",
+    "timestamp": "2025-08-16T14:30:39.793678135",
+    "message": "Journey not found with ID: 10"
+}
+```
+
+>[!WARNING]
+> Only **notifcationsEnabled, days, departureTime, originCRS, destinationCRS** fields can be updated.
+
+### <img width="70" height="15" alt="DELETE" src="https://github.com/user-attachments/assets/c282e969-4537-478e-964a-a3670f307a61" /> `/journey/:journeyid`
+
+Deletes journey at specific journeyID given as path variable and returns a success message. Invalid journeyID will throw 404 and error message.
+
+Response:
+```
+Journey Deleted
+```
+
+Invalid ID:
+```json
+{
+    "httpStatus": "NOT_FOUND",
+    "timestamp": "2025-08-16T14:35:57.964766588",
+    "message": "Journey not found with ID: 30"
+}
+```
+
+### ⛑️ Health Status
+
+APIs health status can be checked at `http://localhost:8080/health`
+
 ## 🔑 API Key Setup
 
 This project uses the [Fastest Departure Board](https://raildata.org.uk/dataProduct/P-4600b51c-29c6-4cab-b5b0-333c32cf5d3c/overview) API from the UK Rail Data Marketplace.
@@ -203,3 +309,42 @@ To run this project yourself:
 
 >[!TIP]
 > The API credentials will be in the specification tab under consumer key, copy this key. However you MUST use API key for **Version 1.0** of the Live Fastest Departure Board.
+
+## Database Connections
+
+### Dev Mode
+
+This API can be configured to run using a H2 in-memory database connection. To utilise this, clone this repository and set `spring.profiles.active=dev` in the application.properties file.
+
+### Connection to PostgreSQL database
+
+To persist data, a PostgreSQL database connection is recommended. Set `spring.profiles.active=prod` in the `application.properties` file. Connection information will need to be configured in a new `application-prod.properties` file as follows:
+
+```
+spring.datasource.url=jdbc:postgresql://localhost:5432/<YOUR_DB_NAME>
+spring.datasource.username=<YOUR_USERNAME>
+spring.datasource.password=<YOUR_PASSWORD>
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+```
+
+## 🐳 Running with Docker
+
+This project includes a `Dockerfile` and `docker-compose.yml` so you can run the app inside a container.
+Using Docker ensures the project runs consistently on any machine.
+
+1. Requirements
+
+    - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (for Windows/macOS) or [Docker Engine](https://docs.docker.com/engine/install/) (for Linux).
+    - An API key from the UK Rail Data Marketplace (look at [API Key Setup](#api-key-setup)).
+
+2. Using Docker Compose
+
+    A `docker-compose.yml` file is included just run the command `docker compose up --build` in terminal to build     the image and the container.
+
+## Future Considerations
+- [x] Integration with mobile front-end.
+- [ ] Further error handling to handle edge cases.
+- [ ] Supporting journeys made up of multiple legs.
+- [ ] Error handling when third party api is down.
