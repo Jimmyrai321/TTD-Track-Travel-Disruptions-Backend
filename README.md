@@ -345,6 +345,6 @@ Using Docker ensures the project runs consistently on any machine.
 
 ## Future Considerations
 - [x] Integration with mobile front-end.
-- [ ] Further error handling to handle edge cases.
+- [ ] Further error handling for post and put.
 - [ ] Supporting journeys made up of multiple legs.
 - [ ] Error handling when third party api is down.
