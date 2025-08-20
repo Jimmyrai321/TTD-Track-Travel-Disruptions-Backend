@@ -337,7 +337,7 @@ Using Docker ensures the project runs consistently on any machine.
 1. Requirements
 
     - [Docker Desktop](https://www.docker.com/products/docker-desktop/) (for Windows/macOS) or [Docker Engine](https://docs.docker.com/engine/install/) (for Linux).
-    - An API key from the UK Rail Data Marketplace (look at [API Key Setup](##api-key-setup)).
+    - An API key from the UK Rail Data Marketplace (look at [API Key Setup](#-api-key-setup).
 
 2. Using Docker Compose
 
