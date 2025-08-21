@@ -270,7 +270,7 @@ Invalid ID:
 ```
 
 >[!WARNING]
-> Only **notifcationsEnabled, days, departureTime, originCRS, destinationCRS** fields can be updated.
+> Only **notificationsEnabled, days, departureTime, originCRS, destinationCRS** fields can be updated.
 
 ### <img width="70" height="15" alt="DELETE" src="https://github.com/user-attachments/assets/c282e969-4537-478e-964a-a3670f307a61" /> `/journey/:journeyid`
 
